@@ -6,7 +6,9 @@
 
 Firstly you will need to extend the `MylesDuncanKing\SimpleMigration\SimpleMigration` class.
 
-Create a new `protected array` property within your class called `$migration` which is where you will define your migration logic.
+Create a new migration file using the same syntax as a default laravel artisan migration but specify that you would like a `simple-migration`. For example `php artisan make:simple-migration your_migration_name`
+
+Within the migration file you will see a new `protected array` property called `$migration` which is where you will define your migration logic.
 
 The format of the `$migration` array is as follows:
 ```php

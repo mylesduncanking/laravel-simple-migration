@@ -1,0 +1,14 @@
+<?php
+
+use MylesDuncanKing\SimpleMigration\SimpleMigration;
+
+class {{ class }} extends SimpleMigration
+{
+    protected array $migration = [
+        '{{ table }}' => [
+            'id' => [],
+            /** Your column definitions go here... **/
+            'timestamps' => [],
+        ]
+    ];
+}
