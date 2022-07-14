@@ -1,11 +1,8 @@
 <?php
 
-declare(strict_types=1);
+namespace MylesDuncanKing\SimpleMigration\Test;
 
-require __DIR__ . '/../src/MethodArgs.php';
-
-use MylesDuncanKing\SimpleMigration\MethodArgs;
-use PHPUnit\Framework\TestCase;
+use MylesDuncanKing\SimpleMigration\Helpers\MethodArgs;
 
 final class MethodArgsTest extends TestCase
 {

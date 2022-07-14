@@ -1,11 +1,8 @@
 <?php
 
-declare(strict_types=1);
+namespace MylesDuncanKing\SimpleMigration\Test;
 
-require __DIR__ . '/../src/SchemaMethod.php';
-
-use MylesDuncanKing\SimpleMigration\SchemaMethod;
-use PHPUnit\Framework\TestCase;
+use MylesDuncanKing\SimpleMigration\Helpers\SchemaMethod;
 
 final class SchemaMethodTest extends TestCase
 {
