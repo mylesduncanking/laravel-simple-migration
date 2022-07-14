@@ -29,7 +29,7 @@ class SimpleMigrationServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../config/simplemigration.php' => config_path('simplemigration.php'),
-        ], 'config');
+        ], 'simplemigration');
     }
 
     protected function registerCommands()

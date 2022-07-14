@@ -32,20 +32,21 @@ For example:
 protected array $migration = [
     /* This table would be created as it contains an 'id' column */
     'table_to_be_created' => [
-        'id' => [],
-        'name' => [],
-        'timestamps' => [],
+        'id'
+        'name',
+        'date:dob' => ['nullable'],
+        'timestamps',
     ],
 
     /* This table would be updated as it doesn't contains an 'id' or 'uuid' column */
     'table_to_be_updated' => [
-        'name' => []
+        'name' => ['after:id']
     ],
 
     /* A table of name "pivot_table" would be created as the method has been defined */
     'create:pivot_table' => [
-        'key_1' => [],
-        'key_2' => [],
+        'foreignId:key_1' => ['index'],
+        'foreignId:key_2' => ['index'],
     ],
 ];
 ```
@@ -54,7 +55,7 @@ protected array $migration = [
 
 The column is passed as the key within the table array.
 
-The format should be defined as [TYPE]:[COLUMN NAME]. For example `integer:quantity`
+The format should be defined as **{ Type }**:**{ Column name }**. For example `integer:quantity`
 
 If you want to pass additional parameters to the type method you can seperate these by a comma. If an array is required prefix the definition with `arr:` and seperate values with a pipe `|`. For example `set:eye_color,arr:blue|green|brown|other`
 
@@ -66,12 +67,16 @@ If you don't pass a type then an assumption will be made as to what type should 
 | Ends in `_at` | timestamp |
 | Anything else | string |
 
+You can modify these assumptions by running `php artisan vendor:publish --tag=simplemigration` and editing `config/simplemigration.php`
+
 More information on valid laravel column types can be found in [Laravel's documentation](https://laravel.com/docs/9.x/migrations#available-column-types).
 
 
 # How to format column modifiers
 
 As the value of each column you pass an array. This array can either be empty or define modifiers to the column.
+
+Each value in the array should follow the format of **{ Modifier }**:**{ Parameters }**. For example `after:id`
 
 More information on valid laravel column modifiers can be found in [Laravel's documentation](https://laravel.com/docs/9.x/migrations#column-modifiers).
 

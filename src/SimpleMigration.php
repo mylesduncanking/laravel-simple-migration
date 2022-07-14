@@ -10,9 +10,11 @@ use MylesDuncanKing\SimpleMigration\Helpers\SchemaMethod;
 
 class SimpleMigration extends Migration
 {
-    public function up()
+    public function up(): void
     {
         foreach ($this->migration as $tableName => $columns) {
+            $columns = $this->standardiseColumns($columns);
+
             list($schemaMethod, $tableName) = SchemaMethod::get($tableName, $columns);
 
             Schema::$schemaMethod($tableName, function (Blueprint $table) use ($columns) {
@@ -29,9 +31,11 @@ class SimpleMigration extends Migration
         }
     }
 
-    public function down()
+    public function down(): void
     {
         foreach ($this->migration as $tableName => $columns) {
+            $columns = $this->standardiseColumns($columns);
+
             list($schemaMethod, $tableName) = SchemaMethod::get($tableName, $columns);
 
             if ($schemaMethod == 'create') {
@@ -49,5 +53,21 @@ class SimpleMigration extends Migration
                 }
             });
         }
+    }
+
+    private function standardiseColumns(array $columns): array
+    {
+        $standardised = [];
+
+        foreach ($columns as $key => $value) {
+            if (is_numeric(substr($key, 0, 1))) {
+                $key = $value;
+                $value = [];
+            }
+
+            $standardised[$key] = $value;
+        }
+
+        return $standardised;
     }
 }
