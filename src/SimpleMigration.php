@@ -5,6 +5,8 @@ namespace MylesDuncanKing\SimpleMigration;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use MylesDuncanKing\SimpleMigration\Helpers\MethodArgs;
+use MylesDuncanKing\SimpleMigration\Helpers\SchemaMethod;
 
 class SimpleMigration extends Migration
 {
