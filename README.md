@@ -56,7 +56,7 @@ The column is passed as the key within the table array.
 
 The format should be defined as [TYPE]:[COLUMN NAME]. For example `integer:quantity`
 
-If you want to pass additional parameters to the type method you can seperate these by a comma. If an array is required prefix the definition with `arr:` and seperate values with a pipe `|`. For example `set:eye_color,arr:blue,green,brown,other`
+If you want to pass additional parameters to the type method you can seperate these by a comma. If an array is required prefix the definition with `arr:` and seperate values with a pipe `|`. For example `set:eye_color,arr:blue|green|brown|other`
 
 If you don't pass a type then an assumption will be made as to what type should be used.
 
