@@ -4,9 +4,10 @@
 
 # Getting started
 
-Firstly you will need to extend the `MylesDuncanKing\SimpleMigration\SimpleMigration` class.
+To use this an understanding of how Laravel's migrations work is required.
+"Migrations are like version control for your database, allowing your team to define and share the application's database schema definition. If you have ever had to tell a teammate to manually add a column to their local database schema after pulling in your changes from source control, you've faced the problem that database migrations solve." - [Laravel documentation](https://laravel.com/docs/9.x/migrations)
 
-Create a new migration file using the same syntax as a default laravel artisan migration but specify that you would like a `simple-migration`. For example `php artisan make:simple-migration your_migration_name`
+To use simple migrations, create a new migration file using the same syntax as a default laravel artisan migration but specify that you would like a `simple-migration`. For example `php artisan make:simple-migration your_migration_name`
 
 Within the migration file you will see a new `protected array` property called `$migration` which is where you will define your migration logic.
 
@@ -81,6 +82,9 @@ Each value in the array should follow the format of **{ Modifier }**:**{ Paramet
 More information on valid laravel column modifiers can be found in [Laravel's documentation](https://laravel.com/docs/9.x/migrations#column-modifiers).
 
 # Example migration
+
+The following migration creates a roles table and add a foreign key into the users table.
+
 ```
 <?php
 
@@ -89,15 +93,17 @@ use MylesDuncanKing\SimpleMigration\SimpleMigration;
 class ExampleMigration extends SimpleMigration
 {
     protected array $migration = [
+        // Create "roles" table as "id" column is specified
         'roles' => [
-            'id',                                           // $table->id(); // = id so $table->id();
+            'id',                                           // $table->id();
             'softDeletes',                                  // $table->softDeletes();
             'string:role,64',                               // $table->string('role', 64);
             'unique:arr:deleted_at|role,roles_unique_role', // $table->unique(['deleted_at', 'role'], 'roles_unique_role');
         ],
+
+        // Update "users" table as no "id" or "uuid" column is specified
         'users' => [
-            'role_id' => ['after:id', 'nullable', 'index'],       // ends in _id so $table:foreignId('role_id');
-            'assigned_at' => ['after:role_id', 'nullable'],       // ends in _at so $table->timestamp('assigned_at');
+            'role_id' => ['after:id', 'nullable', 'index'],       // ends in _id so $table:foreignId('role_id')->after('id')->nullable()->index();
             'foreign:role_id' => ['references:id', 'on:roles'],   // $table->foreign('role_id')->references('id')->on('roles');
         ]
     ];
