@@ -26,9 +26,7 @@ abstract class TestCase extends Orchestra
      */
     protected function getEnvironmentSetUp($app)
     {
-        $app['config']->set('simplemigration.type_assumptions', [
-            '_id$' => 'foreignId',
-            '_at$' => 'timestamp',
-        ]);
+        $config = include(__DIR__ . '/../config/simplemigration.php');
+        $app['config']->set('simplemigration', $config);
     }
 }
