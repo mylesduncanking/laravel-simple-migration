@@ -19,11 +19,9 @@ final class MethodArgsTest extends TestCase
             'foreign:role_id'     => ['foreign', ['role_id']],
 
             // Additional tests
-            'secret_identity'     => ['string', ['secret_identity']],
-            'ordered_at'          => ['timestamp', ['ordered_at']],
-            'datetime:ordered_at' => ['datetime', ['ordered_at']],
-            'user_id'             => ['foreignId', ['user_id']],
-            'first_name'          => ['string', ['first_name']],
+            'secret_identity'     => ['string', ['secret_identity']], // Contains "_id" but not an ID column
+            'datetime:ordered_at' => ['datetime', ['ordered_at']], // Override "_at" assumption
+            'first_name'          => ['string', ['first_name']], // Test string default assumption
             'bool:login_enabled'  => ['bool', ['login_enabled']],
             'set:type_of_product,arr:veg|dairy' => ['set', ['type_of_product', ['veg', 'dairy']]],
             'decimal:amount,8,2'  => ['decimal', ['amount', '8', '2']],
