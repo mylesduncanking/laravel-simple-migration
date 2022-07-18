@@ -16,7 +16,7 @@ final class SchemaMethodTest extends TestCase
 
         foreach ($terms as $tableName => $columns) {
             $response = SchemaMethod::get($tableName, $columns)[0];
-            $this->assertTrue($response == 'create', $tableName);
+            $this->assertTrue($response == 'create', $tableName . ': ' . $response);
         }
     }
 
@@ -24,12 +24,12 @@ final class SchemaMethodTest extends TestCase
     {
         $terms = [
             'test' => ['name' => []],
-            'update:test' => ['id' => []],
+            'table:test' => ['id' => []],
         ];
 
         foreach ($terms as $tableName => $columns) {
             $response = SchemaMethod::get($tableName, $columns)[0];
-            $this->assertTrue($response == 'update', $tableName);
+            $this->assertTrue($response == 'table', $tableName . ': ' . $response);
         }
     }
 }
