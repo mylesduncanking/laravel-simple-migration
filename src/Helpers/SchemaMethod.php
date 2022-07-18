@@ -16,7 +16,7 @@ class SchemaMethod
 
         $method = 'table';
         foreach (array_keys($columns) as $typeName) {
-            $type = MethodArgs::get($typeName, 'string')[0];
+            $type = MethodArgs::get($typeName)[0];
             if (in_array($type, config('simplemigration.create_triggers', []))) {
                 $method = 'create';
                 break;
