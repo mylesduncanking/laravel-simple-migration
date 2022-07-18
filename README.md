@@ -28,6 +28,8 @@ Within the `$migration` property create a key for each table you want to migrate
 
 If an `id` or `uuid` column is defined within the column set then the table will be created, otherwise it will be updated. You can overwrite this by prefixing the table name with either `create:` or `update:` depending on the method you would like to force.
 
+You can modify these assumptions by running `php artisan vendor:publish --tag=simplemigration` and editing `config/simplemigration.php`
+
 For example:
 ```php
 protected array $migration = [
