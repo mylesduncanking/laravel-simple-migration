@@ -22,13 +22,20 @@ protected array $migration = [
 ];
 ```
 
+# Auto-after functionality
+
+To save some time when adding multiple columns to a table, the default behaviour is changed to add columns sequentially. This removes the requirement of adding `->after('foobar')` to every column modifier.
+
+You can disable this behaviour by running `php artisan vendor:publish --tag=simplemigration` and changing `config/simplemigration.php > auto_after` to `false`
+
+
 # Table naming convention
 
 Within the `$migration` property create a key for each table you want to migrate. Within each sub array is where you define the column changes.
 
 If an `id` or `uuid` column is defined within the column set then the table will be created, otherwise it will be updated. You can overwrite this by prefixing the table name with either `create:` or `update:` depending on the method you would like to force.
 
-You can modify these assumptions by running `php artisan vendor:publish --tag=simplemigration` and editing `config/simplemigration.php`
+You can modify these assumptions by running `php artisan vendor:publish --tag=simplemigration` and editing `config/simplemigration.php > type_assumptions`
 
 For example:
 ```php
@@ -70,7 +77,7 @@ If you don't pass a type then an assumption will be made as to what type should 
 | Ends in `_at` | timestamp |
 | Anything else | string |
 
-You can modify these assumptions by running `php artisan vendor:publish --tag=simplemigration` and editing `config/simplemigration.php`
+You can modify these assumptions by running `php artisan vendor:publish --tag=simplemigration` and editing `config/simplemigration.php > create_triggers`. **Note: This is in a regex format.**
 
 More information on valid laravel column types can be found in [Laravel's documentation](https://laravel.com/docs/9.x/migrations#available-column-types).
 
@@ -82,6 +89,7 @@ As the value of each column you pass an array. This array can either be empty or
 Each value in the array should follow the format of **{ Modifier }**:**{ Parameters }**. For example `after:id`
 
 More information on valid laravel column modifiers can be found in [Laravel's documentation](https://laravel.com/docs/9.x/migrations#column-modifiers).
+
 
 # Example migration
 
