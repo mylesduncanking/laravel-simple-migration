@@ -7,7 +7,7 @@
 To use this an understanding of how Laravel's migrations work is required.
 "Migrations are like version control for your database, allowing your team to define and share the application's database schema definition. If you have ever had to tell a teammate to manually add a column to their local database schema after pulling in your changes from source control, you've faced the problem that database migrations solve." - [Laravel documentation](https://laravel.com/docs/9.x/migrations)
 
-To use simple migrations, create a new migration file using the same syntax as a default laravel artisan migration but specify that you would like a `simple-migration`. For example `php artisan make:simple-migration your_migration_name`
+To use simple migrations, create a new migration file using the same syntax as a default Laravel artisan migration but specify that you would like a `simple-migration`. For example `php artisan make:simple-migration your_migration_name`
 
 Within the migration file you will see a new `protected array` property called `$migration` which is where you will define your migration logic.
 
@@ -79,7 +79,7 @@ If you don't pass a type then an assumption will be made as to what type should 
 
 You can modify these assumptions by running `php artisan vendor:publish --tag=simplemigration` and editing `config/simplemigration.php > create_triggers`. **Note: This is in a regex format.**
 
-More information on valid laravel column types can be found in [Laravel's documentation](https://laravel.com/docs/9.x/migrations#available-column-types).
+More information on valid Laravel column types can be found in [Laravel's documentation](https://laravel.com/docs/9.x/migrations#available-column-types).
 
 
 # How to format column modifiers
@@ -88,7 +88,7 @@ As the value of each column you pass an array. This array can either be empty or
 
 Each value in the array should follow the format of **{ Modifier }**:**{ Parameters }**. For example `after:id`
 
-More information on valid laravel column modifiers can be found in [Laravel's documentation](https://laravel.com/docs/9.x/migrations#column-modifiers).
+More information on valid Laravel column modifiers can be found in [Laravel's documentation](https://laravel.com/docs/9.x/migrations#column-modifiers).
 
 
 # Example migration
