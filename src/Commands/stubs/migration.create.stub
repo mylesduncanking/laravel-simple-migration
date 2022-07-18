@@ -6,9 +6,9 @@ class {{ class }} extends SimpleMigration
 {
     protected array $migration = [
         '{{ table }}' => [
-            'id' => [],
+            'id',
             /** Your column definitions go here... **/
-            'timestamps' => [],
+            'timestamps',
         ]
     ];
 }
