@@ -5,6 +5,7 @@ namespace MylesDuncanKing\SimpleMigration;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use MylesDuncanKing\SimpleMigration\Helpers\AutoAfter;
 use MylesDuncanKing\SimpleMigration\Helpers\MethodArgs;
 use MylesDuncanKing\SimpleMigration\Helpers\SchemaMethod;
 
@@ -17,13 +18,17 @@ class SimpleMigration extends Migration
 
             list($schemaMethod, $tableName) = SchemaMethod::get($tableName, $columns);
 
+            if ($schemaMethod == 'table' && config('simplemigration.auto_after', true)) {
+                $columns = AutoAfter::apply($columns);
+            }
+
             Schema::$schemaMethod($tableName, function (Blueprint $table) use ($columns) {
-                foreach ($columns as $typeName => $options) {
+                foreach ($columns as $typeName => $modifiers) {
                     list($type, $args) = MethodArgs::get($typeName, 'string');
                     $column = call_user_func_array([$table, $type], $args);
 
-                    foreach ($options as $option) {
-                        list($method, $args) = MethodArgs::get($option);
+                    foreach ($modifiers as $modifier) {
+                        list($method, $args) = MethodArgs::get($modifier);
                         call_user_func_array([$column, $method], $args);
                     }
                 }

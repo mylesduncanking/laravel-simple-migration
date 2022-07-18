@@ -9,4 +9,5 @@ return [
         'id',
         'uuid',
     ],
+    'auto_after' => true,
 ];
