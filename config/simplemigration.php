@@ -5,4 +5,8 @@ return [
         '_id$' => 'foreignId',
         '_at$' => 'timestamp',
     ],
+    'create_triggers' => [
+        'id',
+        'uuid',
+    ],
 ];

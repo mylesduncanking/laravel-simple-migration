@@ -14,7 +14,14 @@ class SchemaMethod
             }
         }
 
-        $method = array_key_exists('id', $columns) || array_key_exists('uuid', $columns) ? 'create' : 'table';
+        $method = 'table';
+        foreach (array_keys($columns) as $typeName) {
+            $type = MethodArgs::get($typeName, 'string')[0];
+            if (in_array($type, config('simplemigration.create_triggers', []))) {
+                $method = 'create';
+                break;
+            }
+        }
 
         return [$method, $tableName];
     }
