@@ -22,6 +22,8 @@ class SimpleMigration extends Migration
                 $columns = AutoAfter::apply($columns);
             }
 
+            $columns = AutoIndex::apply($columns);
+
             Schema::$schemaMethod($tableName, function (Blueprint $table) use ($columns) {
                 foreach ($columns as $typeName => $modifiers) {
                     list($type, $args) = MethodArgs::get($typeName, 'string');

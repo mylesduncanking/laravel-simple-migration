@@ -29,6 +29,15 @@ To save some time when adding multiple columns to a table, the default behaviour
 You can disable this behaviour by running `php artisan vendor:publish --tag=simplemigration` and changing `config/simplemigration.php > auto_after` to `false`
 
 
+# Auto-index functionality
+
+To save some time you can use the automatic index feature. By default this will automatically add the `->index()` modifier to any column ending in `_id`
+
+You can modify these rules by running `php artisan vendor:publish --tag=simplemigration` and changing the values within the `config/simplemigration.php > auto_index` array. **Note: These values are in a regex format.**
+
+You can also specify an auto-index column to not be indexed ad-hoc by passing the `noIndex` option in the modifiers array.
+
+
 # Table naming convention
 
 Within the `$migration` property create a key for each table you want to migrate. Within each sub array is where you define the column changes.
@@ -113,8 +122,8 @@ class ExampleMigration extends SimpleMigration
 
         // Update "users" table as no "id" or "uuid" column is specified
         'users' => [
-            'role_id' => ['after:id', 'nullable', 'index'],       // ends in _id so $table:foreignId('role_id')->after('id')->nullable()->index();
-            'foreign:role_id' => ['references:id', 'on:roles'],   // $table->foreign('role_id')->references('id')->on('roles');
+            'role_id' => ['after:id', 'nullable'],       // ends in _id so $table:foreignId('role_id')->after('id')->nullable()->index();
+            'foreign:role_id' => ['references:id', 'on:roles'],   // $table->foreign('role_id')->references('id')->on('roles')->index();
         ]
     ];
 }

@@ -10,4 +10,7 @@ return [
         'uuid',
     ],
     'auto_after' => true,
+    'auto_index' => [
+        '_id$'
+    ],
 ];
