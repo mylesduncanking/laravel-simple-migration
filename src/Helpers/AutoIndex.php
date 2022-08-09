@@ -21,7 +21,7 @@ class AutoIndex
             }
 
             // Get the column name from type name combination
-            $column = MethodArgs::get($typeName, 'string')[1][0];
+            $column = MethodArgs::get($typeName, 'string')[1][0] ?? '';
 
             foreach ($autoIndexTerms as $autoIndexTerm) {
                 // Ensure column should be auto-indexed
