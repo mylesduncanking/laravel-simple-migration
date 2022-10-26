@@ -6,6 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use MylesDuncanKing\SimpleMigration\Helpers\AutoAfter;
+use MylesDuncanKing\SimpleMigration\Helpers\AutoIndex;
 use MylesDuncanKing\SimpleMigration\Helpers\MethodArgs;
 use MylesDuncanKing\SimpleMigration\Helpers\SchemaMethod;
 
