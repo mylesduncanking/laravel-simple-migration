@@ -22,7 +22,9 @@ class MethodArgs
         }
 
         $method = explode(':', $colonSeperatedString)[0];
-        $args   = array_filter(explode(',', substr($colonSeperatedString, strlen($method) + 1)));
+
+        $args = explode(',', substr($colonSeperatedString, strlen($method) + 1));
+        $args = array_filter($args, fn($value) => !is_null($value) && $value !== '');
 
         if (empty($args)) {
             foreach (config('simplemigration.type_assumptions') as $pattern => $presetMethod) {

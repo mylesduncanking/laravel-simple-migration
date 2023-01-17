@@ -14,6 +14,10 @@ class SimpleMigration extends Migration
 {
     public function up(): void
     {
+        if (method_exists($this, 'beforeUp')) {
+            $this->beforeUp();
+        }
+
         foreach ($this->migration as $tableName => $columns) {
             $columns = $this->standardiseColumns($columns);
 
@@ -37,10 +41,18 @@ class SimpleMigration extends Migration
                 }
             });
         }
+
+        if (method_exists($this, 'afterUp')) {
+            $this->afterUp();
+        }
     }
 
     public function down(): void
     {
+        if (method_exists($this, 'afterDown')) {
+            $this->afterDown();
+        }
+
         foreach ($this->migration as $tableName => $columns) {
             $columns = $this->standardiseColumns($columns);
 
@@ -60,6 +72,10 @@ class SimpleMigration extends Migration
                     }
                 }
             });
+        }
+
+        if (method_exists($this, 'afterDown')) {
+            $this->afterDown();
         }
     }
 
