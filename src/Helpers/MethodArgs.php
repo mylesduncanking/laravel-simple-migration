@@ -42,8 +42,13 @@ class MethodArgs
         foreach ($args as &$arg) {
             $arg = trim($arg);
 
+            // Legacy: Arrays were prefixed with "arr:"
             if (substr($arg, 0, 4) == 'arr:') {
-                $arg = explode('|', substr($arg, 4));
+                $arg = substr($arg, 4);
+            }
+
+            if (strpos($arg, '|') !== false) {
+                $arg = explode('|', $arg);
                 $arg = array_map('trim', $arg);
             }
         }

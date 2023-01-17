@@ -76,7 +76,7 @@ The column is passed as the key within the table array.
 
 The format should be defined as **{ Type }**:**{ Column name }**. For example `integer:quantity`
 
-If you want to pass additional parameters to the type method you can seperate these by a comma. If an array is required prefix the definition with `arr:` and seperate values with a pipe `|`. For example `set:eye_color,arr:blue|green|brown|other`
+If you want to pass additional parameters to the type method you can seperate these by a comma. If an array is required seperate values with a pipe `|`. For example `set:eye_color,blue|green|brown|other`
 
 If you don't pass a type then an assumption will be made as to what type should be used.
 
@@ -114,10 +114,10 @@ class ExampleMigration extends SimpleMigration
     protected array $migration = [
         // Create "roles" table as "id" column is specified
         'roles' => [
-            'id',                                           // $table->id();
-            'softDeletes',                                  // $table->softDeletes();
-            'string:role,64',                               // $table->string('role', 64);
-            'unique:arr:deleted_at|role,roles_unique_role', // $table->unique(['deleted_at', 'role'], 'roles_unique_role');
+            'id',                                       // $table->id();
+            'softDeletes',                              // $table->softDeletes();
+            'string:role,64',                           // $table->string('role', 64);
+            'unique:deleted_at|role,roles_unique_role', // $table->unique(['deleted_at', 'role'], 'roles_unique_role');
         ],
 
         // Update "users" table as no "id" or "uuid" column is specified

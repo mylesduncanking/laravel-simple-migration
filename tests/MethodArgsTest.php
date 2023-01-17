@@ -13,7 +13,7 @@ final class MethodArgsTest extends TestCase
             'id'                  => ['id', []],
             'softDeletes'         => ['softDeletes', []],
             'string:role,64'      => ['string', ['role', '64']],
-            'unique:arr:deleted_at|role,roles_unique_role' => ['unique', [['deleted_at', 'role'], 'roles_unique_role']],
+            'unique:deleted_at|role,roles_unique_role' => ['unique', [['deleted_at', 'role'], 'roles_unique_role']],
             'role_id'             => ['foreignId', ['role_id']],
             'assigned_at'         => ['timestamp', ['assigned_at']],
             'foreign:role_id'     => ['foreign', ['role_id']],
@@ -23,7 +23,7 @@ final class MethodArgsTest extends TestCase
             'datetime:ordered_at' => ['datetime', ['ordered_at']], // Override "_at" assumption
             'first_name'          => ['string', ['first_name']], // Test string default assumption
             'bool:login_enabled'  => ['bool', ['login_enabled']],
-            'set:type_of_product,arr:veg|dairy' => ['set', ['type_of_product', ['veg', 'dairy']]],
+            'set:type_of_product,veg|dairy' => ['set', ['type_of_product', ['veg', 'dairy']]],
             'decimal:amount,8,2'  => ['decimal', ['amount', '8', '2']],
         ];
 
