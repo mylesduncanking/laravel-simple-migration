@@ -49,8 +49,8 @@ class SimpleMigration extends Migration
 
     public function down(): void
     {
-        if (method_exists($this, 'afterDown')) {
-            $this->afterDown();
+        if (method_exists($this, 'beforeDown')) {
+            $this->beforeDown();
         }
 
         foreach ($this->migration as $tableName => $columns) {
