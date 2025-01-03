@@ -2,7 +2,7 @@
 
 use MylesDuncanKing\SimpleMigration\SimpleMigration;
 
-class {{ class }} extends SimpleMigration
+return new class extends SimpleMigration
 {
     protected array $migration = [
         '{{ table }}' => [
