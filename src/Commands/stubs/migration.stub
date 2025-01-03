@@ -7,6 +7,6 @@ return new class extends SimpleMigration
     protected array $migration = [
         '{{ table }}' => [
             /** Your column definitions go here... **/
-        ]
+        ],
     ];
-}
+};
