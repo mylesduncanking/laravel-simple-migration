@@ -88,7 +88,7 @@ class SimpleMigration extends Migration
         $namespace = 'Seeds\\' . $name . 'Seeder';
 
         if (! class_exists($namespace)) {
-            throw new Exception("Seeder \"$namespace\" not found");
+            throw new \RuntimeException("Seeder \"$namespace\" not found");
         }
 
         (new $namespace())->run();

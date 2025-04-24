@@ -1,73 +1,129 @@
-# Install via composer
+# Laravel Simple Migration
 
-`composer require mylesduncanking/laravel-simple-migration`
+## 📦 Installation
 
-# Getting started
+```bash
+composer require mylesduncanking/laravel-simple-migration
+```
 
-To use this an understanding of how Laravel's migrations work is required.
-"Migrations are like version control for your database, allowing your team to define and share the application's database schema definition. If you have ever had to tell a teammate to manually add a column to their local database schema after pulling in your changes from source control, you've faced the problem that database migrations solve." - [Laravel documentation](https://laravel.com/docs/9.x/migrations)
+---
 
-To use simple migrations, create a new migration file using the same syntax as a default Laravel artisan migration but specify that you would like a `simple-migration`. For example `php artisan make:simple-migration your_migration_name`
+## ❓ Why Use This Package?
 
-Within the migration file you will see a new `protected array` property called `$migration` which is where you will define your migration logic.
+Laravel's migrations are powerful but can become verbose and repetitive, especially for simple table structures or frequent seed/migrate workflows.
 
-The format of the `$migration` array is as follows:
+**Laravel Simple Migration** helps you:
+
+- Write cleaner, array-based migration definitions
+- Avoid boilerplate like `->after()` and `->index()`
+- Automatically run seeders alongside migrations
+- Maintain clarity and control with a minimal syntax layer
+
+Perfect for rapid prototyping, internal tools, or any dev who loves less noise and more flow.
+
+---
+
+## 🚀 Getting Started
+
+This package builds on Laravel's native migration system. If you're familiar with [Laravel migrations](https://laravel.com/docs/9.x/migrations), this will feel familiar.
+
+To create a simple migration:
+
+```bash
+php artisan make:simple-migration your_migration_name
+```
+
+Your migration file will contain a `$migration` array for defining schema changes.
+
+### Format
+
 ```php
 protected array $migration = [
-    'TABLE NAME' => [
-        'COLUMN NAME' => ['COLUMN MODIFIERS' /** Additional modifiers **/],
-        /* Additional columns */
+    'TABLE_NAME' => [
+        'COLUMN_NAME' => ['MODIFIERS'],
+        // Additional columns...
     ],
-    /* Additional tables */
+    // Additional tables...
 ];
 ```
 
-# Auto-after functionality
+---
 
-To save some time when adding multiple columns to a table, the default behaviour is changed to add columns sequentially. This removes the requirement of adding `->after('foobar')` to every column modifier.
+## 🔁 Auto-After Functionality
 
-You can disable this behaviour by running `php artisan vendor:publish --tag=simplemigration` and changing `config/simplemigration.php > auto_after` to `false`
+To save time when adding multiple columns, this package adds them sequentially by default. This removes the need for `->after('column')`.
 
+To disable this:
 
-# Auto-index functionality
+```bash
+php artisan vendor:publish --tag=simplemigration
+```
 
-To save some time you can use the automatic index feature. By default this will automatically add the `->index()` modifier to any column ending in `_id`
+Then set `config/simplemigration.php > auto_after` to `false`.
 
-You can modify these rules by running `php artisan vendor:publish --tag=simplemigration` and changing the values within the `config/simplemigration.php > auto_index` array. **Note: These values are in a regex format.**
+---
 
-You can also specify an auto-index column to not be indexed ad-hoc by passing the `noIndex` option in the modifiers array.
+## ⚡ Auto-Index Functionality
 
-# Seeder functionality
+By default, any column ending in `_id` will automatically get an `->index()` modifier.
 
-Often table creations or changes go hand-in-hand with seeder but these can be difficult to run automatically. Using the way that Laravel tracks migrations, you can then instruct a seeder file to run too.
+Customize this behavior:
 
-Note: The seeder will only run within the `up` method. If you would like to run a seeder during the `down` method too, then you can utilise the `beforeDown` or `afterDown` methods and call the `runSeeder` method.
+```bash
+php artisan vendor:publish --tag=simplemigration
+```
 
-# Table naming convention
+Then edit the regex rules in `config/simplemigration.php > auto_index`.
 
-Within the `$migration` property create a key for each table you want to migrate. Within each sub array is where you define the column changes.
+To exclude a specific column from auto-indexing, add `noIndex` in its modifiers array.
 
-If an `id` or `uuid` column is defined within the column set then the table will be created, otherwise it will be updated. You can overwrite this by prefixing the table name with either `create:` or `update:` depending on the method you would like to force.
+---
 
-You can modify these assumptions by running `php artisan vendor:publish --tag=simplemigration` and editing `config/simplemigration.php > type_assumptions`
+## 🌱 Seeder Functionality
 
-For example:
+Table creations or updates often require seeders. This package uses Laravel's migration tracking to automatically run seeders during the `up()` method.
+
+```php
+protected array $seeders = [
+    'roles',
+];
+```
+
+> **Note:** Seeders only run during `up()` by default.
+> To run seeders during rollback (`down()`), use `beforeDown()` or `afterDown()` and call `runSeeder()` manually.
+
+---
+
+## 📘 Table Naming Convention
+
+If a table includes an `id` or `uuid` column, it is assumed to be a new table. Otherwise, the table is assumed to be updated.
+
+To explicitly define the action, use:
+
+- `create:table_name`
+- `update:table_name`
+
+Or adjust assumptions globally:
+
+```php
+config/simplemigration.php > type_assumptions
+```
+
+### Example
+
 ```php
 protected array $migration = [
-    /* This table would be created as it contains an 'id' column */
     'table_to_be_created' => [
-        'id'
+        'id',
         'name',
         'date:dob' => ['nullable'],
         'timestamps',
     ],
 
-    /* This table would be updated as it doesn't contains an 'id' or 'uuid' column */
     'table_to_be_updated' => [
         'name' => ['after:id']
     ],
 
-    /* A table of name "pivot_table" would be created as the method has been defined */
     'create:pivot_table' => [
         'foreignId:key_1' => ['index'],
         'foreignId:key_2' => ['index'],
@@ -75,65 +131,78 @@ protected array $migration = [
 ];
 ```
 
-# How to format column keys
+---
 
-The column is passed as the key within the table array.
+## 🏷️ Column Key Format
 
-The format should be defined as **{ Type }**:**{ Column name }**. For example `integer:quantity`
+Format keys as `{type}:{column}`.
 
-If you want to pass additional parameters to the type method you can seperate these by a comma. If an array is required seperate values with a pipe `|`. For example `set:eye_color,blue|green|brown|other`
+### Examples:
 
-If you don't pass a type then an assumption will be made as to what type should be used.
+- `integer:quantity`
+- `set:status`
+- `foreignId:user_id`
+- `date:dob` => ['nullable']
 
-|  | Assumed type |
-| --- | --- |
-| Ends in `_id` | foreignId |
-| Ends in `_at` | timestamp |
-| Anything else | string |
+---
 
-You can modify these assumptions by running `php artisan vendor:publish --tag=simplemigration` and editing `config/simplemigration.php > create_triggers`. **Note: This is in a regex format.**
+## ✅ Supported Modifiers
 
-More information on valid Laravel column types can be found in [Laravel's documentation](https://laravel.com/docs/9.x/migrations#available-column-types).
+You can use all default Laravel column modifiers in array format:
 
+- `nullable`
+- `default:value`
+- `unique`
+- `index`
+- `after:other_column`
+- `comment:some text`
+- `noIndex` (custom)
 
-# How to format column modifiers
+---
 
-As the value of each column you pass an array. This array can either be empty or define modifiers to the column.
+## ✨ Helper Methods
 
-Each value in the array should follow the format of **{ Modifier }**:**{ Parameters }**. For example `after:id`
+### beforeDown()
+Hook to perform actions before the `down()` method runs.
 
-More information on valid Laravel column modifiers can be found in [Laravel's documentation](https://laravel.com/docs/9.x/migrations#column-modifiers).
+### afterDown()
+Hook to perform actions after the `down()` method runs.
 
+### runSeeder($seeder)
+Run a seeder manually during `up()` or `down()`.
 
-# Example migration
+---
 
-The following migration creates a roles table and add a foreign key into the users table.
+## ✏️ Example Seeder Triggered in Migration
 
+```php
+protected array $migration = [
+    'roles' => [
+        'id',
+        'name',
+    ],
+];
+
+protected array $seeders = [
+    'Role'
+];
 ```
-<?php
 
-use MylesDuncanKing\SimpleMigration\SimpleMigration;
+This will run `Role` when the migration is applied.
 
-class ExampleMigration extends SimpleMigration
-{
-    protected array $seeders = [
-        'roles'
-    ];
+---
 
-    protected array $migration = [
-        // Create "roles" table as "id" column is specified
-        'roles' => [
-            'id',                                       // $table->id();
-            'softDeletes',                              // $table->softDeletes();
-            'string:role,64',                           // $table->string('role', 64);
-            'unique:deleted_at|role,roles_unique_role', // $table->unique(['deleted_at', 'role'], 'roles_unique_role');
-        ],
+## 📁 Config File
 
-        // Update "users" table as no "id" or "uuid" column is specified
-        'users' => [
-            'role_id' => ['after:id', 'nullable'],       // ends in _id so $table:foreignId('role_id')->after('id')->nullable()->index();
-            'foreign:role_id' => ['references:id', 'on:roles'],   // $table->foreign('role_id')->references('id')->on('roles')->index();
-        ]
-    ];
-}
+To customize assumptions and toggles:
+
+```bash
+php artisan vendor:publish --tag=simplemigration
 ```
+
+Edit `config/simplemigration.php` to:
+
+- Enable/disable auto-index or auto-after
+- Add custom regex rules
+- Set type assumptions for new vs update
+
