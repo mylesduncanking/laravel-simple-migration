@@ -39,7 +39,7 @@ You can also specify an auto-index column to not be indexed ad-hoc by passing th
 
 # Seeder functionality
 
-Quite often you will need to rerun a seeder but these can be difficult to run automatically. Using the way that Laravel tracks migrations, you can then instruct a seeder file to run too.
+Often table creations or changes go hand-in-hand with seeder but these can be difficult to run automatically. Using the way that Laravel tracks migrations, you can then instruct a seeder file to run too.
 
 Note: The seeder will only run within the `up` method. If you would like to run a seeder during the `down` method too, then you can utilise the `beforeDown` or `afterDown` methods and call the `runSeeder` method.
 
