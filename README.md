@@ -87,7 +87,7 @@ This package assumes that seeders are stored under  `\Seeds` namespace and have 
 
 ```php
 protected array $seeders = [
-    'roles',
+    'roles', // This will translate to (new \Seeds\RolesSeeder())->run()
 ];
 ```
 
