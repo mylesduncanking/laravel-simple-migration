@@ -18,7 +18,7 @@ class SimpleMigration extends Migration
             $this->beforeUp();
         }
 
-        foreach ($this->migration as $tableName => $columns) {
+        foreach (($this->migration ?? []) as $tableName => $columns) {
             $columns = $this->standardiseColumns($columns);
 
             list($schemaMethod, $tableName) = SchemaMethod::get($tableName, $columns);
@@ -45,6 +45,16 @@ class SimpleMigration extends Migration
         if (method_exists($this, 'afterUp')) {
             $this->afterUp();
         }
+
+        foreach (($this->seeders ?? []) as $seeder) {
+            $seeder = 'Seeds\\' . $seeder;
+
+            if (class_exists($seeder)) {
+                (new $seeder())->run();
+            } else {
+                throw new \Exception("Seeder class {$seeder} does not exist.");
+            }
+        }
     }
 
     public function down(): void
@@ -53,7 +63,7 @@ class SimpleMigration extends Migration
             $this->beforeDown();
         }
 
-        foreach ($this->migration as $tableName => $columns) {
+        foreach (($this->migration ?? []) as $tableName => $columns) {
             $columns = $this->standardiseColumns($columns);
 
             list($schemaMethod, $tableName) = SchemaMethod::get($tableName, $columns);
