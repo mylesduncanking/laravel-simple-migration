@@ -68,7 +68,11 @@ class SimpleMigration extends Migration
             }
 
             Schema::table($tableName, function (Blueprint $table) use ($tableName, $columns) {
-                foreach (array_reverse(array_keys($columns)) as $typeName) {
+                foreach (array_reverse($columns) as $typeName => $modifiers) {
+                    if (in_array('change', $modifiers) || in_array('drop', $modifiers)) {
+                        continue;
+                    }
+
                     $column = MethodArgs::get($typeName, 'string')[1][0];
 
                     if (Schema::hasColumn($tableName, $column)) {
