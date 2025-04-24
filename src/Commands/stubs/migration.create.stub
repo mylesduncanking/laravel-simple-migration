@@ -4,6 +4,10 @@ use MylesDuncanKing\SimpleMigration\SimpleMigration;
 
 return new class extends SimpleMigration
 {
+    protected array $seeders = [
+        /** Names of any seeders to run... **/
+    ];
+
     protected array $migration = [
         '{{ table }}' => [
             'id',

@@ -47,13 +47,7 @@ class SimpleMigration extends Migration
         }
 
         foreach (($this->seeders ?? []) as $seeder) {
-            $seeder = 'Seeds\\' . $seeder;
-
-            if (class_exists($seeder)) {
-                (new $seeder())->run();
-            } else {
-                throw new \Exception("Seeder class {$seeder} does not exist.");
-            }
+            $this->runSeeder($seeder);
         }
     }
 
@@ -87,6 +81,17 @@ class SimpleMigration extends Migration
         if (method_exists($this, 'afterDown')) {
             $this->afterDown();
         }
+    }
+
+    protected function runSeeder(string $name)
+    {
+        $namespace = 'Seeds\\' . $name . 'Seeder';
+
+        if (! class_exists($namespace)) {
+            throw new Exception("Seeder \"$namespace\" not found");
+        }
+
+        (new $namespace())->run();
     }
 
     private function standardiseColumns(array $columns): array
