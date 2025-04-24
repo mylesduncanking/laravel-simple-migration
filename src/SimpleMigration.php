@@ -85,7 +85,7 @@ class SimpleMigration extends Migration
 
     protected function runSeeder(string $name)
     {
-        $namespace = 'Seeds\\' . $name . 'Seeder';
+        $namespace = 'Seeds\\' . ucfirst($name) . 'Seeder';
 
         if (! class_exists($namespace)) {
             throw new \RuntimeException("Seeder \"$namespace\" not found");

@@ -83,6 +83,8 @@ To exclude a specific column from auto-indexing, add `noIndex` in its modifiers 
 
 Table creations or updates often require seeders. This package uses Laravel's migration tracking to automatically run seeders during the `up()` method.
 
+This package assumes that seeders are stored under  `\Seeds` namespace and have a class name that starts with a capital letter and ends with `Seeder`.
+
 ```php
 protected array $seeders = [
     'roles',
@@ -90,7 +92,7 @@ protected array $seeders = [
 ```
 
 > **Note:** Seeders only run during `up()` by default.
-> To run seeders during rollback (`down()`), use `beforeDown()` or `afterDown()` and call `runSeeder()` manually.
+> To run seeders during rollback (`down()`), use `beforeDown()` or `afterDown()` and call `runSeeder($seederName)` manually.
 
 ---
 
@@ -169,7 +171,7 @@ Hook to perform actions before the `down()` method runs.
 Hook to perform actions after the `down()` method runs.
 
 ### runSeeder($seeder)
-Run a seeder manually during `up()` or `down()`.
+Run a seeder manually.
 
 ---
 
@@ -188,7 +190,7 @@ protected array $seeders = [
 ];
 ```
 
-This will run `Role` when the migration is applied.
+This will run `RoleSeeder` when the migration is applied.
 
 ---
 
