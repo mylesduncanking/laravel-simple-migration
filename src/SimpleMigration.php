@@ -38,8 +38,18 @@ class SimpleMigration extends Migration
                         $type = 'dropColumn';
                     }
 
+                    // Do a pre-check on dropColumns that the column exists
+                    if ($type == 'dropColumn') {
+                        if (Schema::hasColumn($table->getTable(), $args[0])) {
+                            $table->dropColumn($args[0]);
+                        }
+                        continue;
+                    }
+
+                    // Call the first portion of the migration e.g. $table->string('foo')
                     $column = call_user_func_array([$table, $type], $args);
 
+                    // Call any modifiers e.g. ->after('bar')->index() etc.
                     foreach ($modifiers as $modifier) {
                         list($method, $args) = MethodArgs::get($modifier);
                         call_user_func_array([$column, $method], $args);
@@ -83,7 +93,7 @@ class SimpleMigration extends Migration
                     foreach ($ignores as $ignore) {
                         if (
                             in_array($ignore, $modifiers)
-                            || in_array($ignore, $type)
+                            || $ignore == $type
                         ) {
                             $shouldIgnore = true;
                             break;
