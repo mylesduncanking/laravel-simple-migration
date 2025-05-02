@@ -32,6 +32,12 @@ class SimpleMigration extends Migration
             Schema::$schemaMethod($tableName, function (Blueprint $table) use ($columns) {
                 foreach ($columns as $typeName => $modifiers) {
                     list($type, $args) = MethodArgs::get($typeName, 'string');
+
+                    // Ensure there is no accidental "drop" as this drops the entire table
+                    if ($type == 'drop') {
+                        $type = 'dropColumn';
+                    }
+
                     $column = call_user_func_array([$table, $type], $args);
 
                     foreach ($modifiers as $modifier) {
@@ -69,12 +75,26 @@ class SimpleMigration extends Migration
 
             Schema::table($tableName, function (Blueprint $table) use ($tableName, $columns) {
                 foreach (array_reverse($columns) as $typeName => $modifiers) {
-                    if (in_array('change', $modifiers) || in_array('drop', $modifiers)) {
+                    list($type, $args) = MethodArgs::get($typeName, 'string');
+
+                    // Check if the type is something that isn't simply rollbackable
+                    $shouldIgnore = false;
+                    $ignores = ['drop', 'change', 'rename', 'dropColumn'];
+                    foreach ($ignores as $ignore) {
+                        if (
+                            in_array($ignore, $modifiers)
+                            || in_array($ignore, $type)
+                        ) {
+                            $shouldIgnore = true;
+                            break;
+                        }
+                    }
+                    if ($shouldIgnore) {
                         continue;
                     }
 
-                    $column = MethodArgs::get($typeName, 'string')[1][0];
 
+                    $column = $args[0];
                     if (Schema::hasColumn($tableName, $column)) {
                         $table->dropColumn($column);
                     }
