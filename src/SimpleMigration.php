@@ -122,7 +122,11 @@ class SimpleMigration extends Migration
         $namespace = 'Seeds\\' . ucfirst($name) . 'Seeder';
 
         if (! class_exists($namespace)) {
-            throw new \RuntimeException("Seeder \"$namespace\" not found");
+            $namespace = 'Database\\Seeders\\' . ucfirst($name) . 'Seeder';
+        }
+
+        if (! class_exists($namespace)) {
+            throw new \RuntimeException("Seeder \"$name\" not found");
         }
 
         (new $namespace())->run();
