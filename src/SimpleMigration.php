@@ -119,10 +119,14 @@ class SimpleMigration extends Migration
 
     protected function runSeeder(string $name)
     {
-        $namespace = 'Seeds\\' . ucfirst($name) . 'Seeder';
+        if (substr($name, 0, 1) == '\\') {
+            $namespace = ltrim($name, '\\');
+        } else {
+            $namespace = 'Seeds\\' . ucfirst($name) . 'Seeder';
 
-        if (! class_exists($namespace)) {
-            $namespace = 'Database\\Seeders\\' . ucfirst($name) . 'Seeder';
+            if (! class_exists($namespace)) {
+                $namespace = 'Database\\Seeders\\' . ucfirst($name) . 'Seeder';
+            }
         }
 
         if (! class_exists($namespace)) {
