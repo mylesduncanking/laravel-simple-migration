@@ -103,6 +103,13 @@ class SimpleMigration extends Migration
                         continue;
                     }
 
+                    // Invert renameColumn methods
+                    if ($type == 'renameColumn') {
+                        if (Schema::hasColumn($tableName, $args[1])) {
+                            $table->renameColumn($args[1], $args[0]);
+                        }
+                        continue;
+                    }
 
                     $column = $args[0];
                     if (Schema::hasColumn($tableName, $column)) {
