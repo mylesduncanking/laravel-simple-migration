@@ -126,7 +126,9 @@ class SimpleMigration extends Migration
 
     protected function runSeeder(string $name)
     {
-        if (substr($name, 0, 1) == '\\') {
+        if (class_exists($name)) {
+            $namespace = $name;
+        } elseif (substr($name, 0, 1) == '\\') {
             $namespace = ltrim($name, '\\');
         } else {
             $namespace = 'Seeds\\' . ucfirst($name) . 'Seeder';
