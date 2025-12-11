@@ -2,12 +2,13 @@
 
 return [
     'type_assumptions' => [
-        '_id$'  => 'foreignId',
-        '_at$'  => 'timestamp',
-        '^is_'  => 'boolean',
-        '_log$' => 'json',
-        '_by$'  => 'date',
-        '_on$'  => 'date',
+        '_id$'   => 'foreignId',
+        '_at$'   => 'timestamp',
+        '^is_'   => 'boolean',
+        '_log$'  => 'json',
+        '_by$'   => 'date',
+        '_on$'   => 'date',
+        '_date$' => 'date',
     ],
     'create_triggers' => [
         'id',
